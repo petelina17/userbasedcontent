@@ -1,8 +1,24 @@
 import * as React from "react";
+import { TextField, Button } from "@material-ui/core";
+import "./loginpage.css";
 
 class LoginPage extends React.Component {
   render() {
-    return <>Login</>;
+    return (
+      <div className="login-box">
+        <div> INSERT LOGO</div>
+        <TextField size="small" label="Username" variant="outlined" required />
+        <TextField size="small" label="Password" variant="outlined" required />
+        <Button
+          size="small"
+          id="login-btn"
+          variant="contained"
+          color="secondary"
+        >
+          LOGIN
+        </Button>
+      </div>
+    );
   }
 }
 
