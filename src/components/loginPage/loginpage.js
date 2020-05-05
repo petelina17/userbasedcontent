@@ -10,7 +10,7 @@ class LoginPage extends React.Component {
         <TextField size="small" label="Username" variant="outlined" required />
         <TextField size="small" label="Password" variant="outlined" required />
         <Button
-          size="small"
+          size="medium"
           id="login-btn"
           variant="contained"
           color="secondary"

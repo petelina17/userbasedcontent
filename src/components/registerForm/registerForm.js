@@ -13,7 +13,7 @@ class RegisterForm extends React.Component {
         <TextField size="small" label="Password" variant="outlined" />
         <TextField size="small" label="Confirm Password" variant="outlined" />
         <Button
-          size="small"
+          size="medium"
           id="login-btn"
           variant="contained"
           color="secondary"
