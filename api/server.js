@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 
+var mongoose = require('mongoose')
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testAPIRouter = require("./routes/testAPI");
@@ -22,7 +24,7 @@ server.use(express.urlencoded({ extended: false }));
 server.use(cookieParser());
 server.use(express.static(path.join(__dirname, 'public')));
 
-// server.use('/', indexRouter);
+server.use('/', indexRouter);
 server.use('/users', usersRouter);
 server.use('/testAPI', testAPIRouter);
 
@@ -41,5 +43,13 @@ server.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true,  useUnifiedTopology: true })
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', function () {
+  console.log('we are connected')
+})
 
 module.exports = server;
