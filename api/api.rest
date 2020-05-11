@@ -1,0 +1,11 @@
+PUT http://localhost:9000/content
+Content-Type: application/json
+
+{
+  "title": "Fairy-tale",
+  "username": "Astrid L.",
+  "date": "2020-05-11",
+  "text": "lorem ipsum dolor sit amet"
+}
+
+###
