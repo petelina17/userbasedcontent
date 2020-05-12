@@ -1,6 +1,8 @@
 var Content = require('../models/content')
+var User = require('../models/user')
 var express = require('express')
 var router = express.Router()
+var bcrypt = require('bcrypt')
 var helpers = require('./helpers')
 
 router.put('/content', async (req, res, next) => {
@@ -10,7 +12,7 @@ router.put('/content', async (req, res, next) => {
 
   // go to mongodb ...
   const content = await new Content(data)
-  const saved = content.save(helpers.handleError(res, "OK"))
+  const saved = content.save(helpers.handleError(res, 'OK'))
 })
 
 router.get('/contents', (req, res) => {
@@ -20,7 +22,7 @@ router.get('/contents', (req, res) => {
   })
 })
 
-router.put('/login', (req, res) => {
+router.put('/login', async (req, res) => {
   const login = req.body
   if (login.username == null || login.password == null) {
     res.statusCode = 401
@@ -29,20 +31,17 @@ router.put('/login', (req, res) => {
   }
 
   // check if username exists in database
-
-  // TODO...
-
-  if (false) {
+  const user = await User.findOne({username: login.username})
+  if (user == null) {
     res.statusCode = 401
     res.end('invalid username or password')
     return
   }
 
   // compare hash from database and hash of recieved password
-
-  // TODO...
-
-  if (false) {
+  const match = bcrypt.compareSync(login.password, user.passwordHash, 10)
+  console.log('match ', match)
+  if (!match) {
     res.statusCode = 401
     res.end('invalid username or password')
     return
