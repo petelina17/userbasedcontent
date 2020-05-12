@@ -26,7 +26,7 @@ router.put('/login', async (req, res) => {
   const login = req.body
   if (login.username == null || login.password == null) {
     res.statusCode = 401
-    res.end('invalid username or password')
+    res.end(JSON.stringify({error:'invalid username or password'}))
     return
   }
 
@@ -34,7 +34,7 @@ router.put('/login', async (req, res) => {
   const user = await User.findOne({username: login.username})
   if (user == null) {
     res.statusCode = 401
-    res.end('invalid username or password')
+    res.end(JSON.stringify({error:'invalid username or password'}))
     return
   }
 
@@ -43,7 +43,7 @@ router.put('/login', async (req, res) => {
   console.log('match ', match)
   if (!match) {
     res.statusCode = 401
-    res.end('invalid username or password')
+    res.end(JSON.stringify({error:'invalid username or password'}))
     return
   }
 
