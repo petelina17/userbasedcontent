@@ -6,7 +6,7 @@ var path = require('path');
 var cors = require('cors');
 var db = require('./connect')
 
-var contentRouter = require('./routes/content');
+var contentRouter = require('./routes/index');
 
 var server = express();
 
