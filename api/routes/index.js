@@ -50,5 +50,34 @@ router.put('/login', async (req, res) => {
   res.end(JSON.stringify({login: true}))
 })
 
+router.put('/register', async (req, res) => {
+  const registration = req.body
+  if (registration.username == null || registration.password == null
+  || registration.fullname == null || registration.phoneNumber == null) {
+    res.statusCode = 400
+    res.end(JSON.stringify({error:'incorrect input'}))
+    return
+  }
+
+  // check if username exists in database
+  let user = await User.findOne({username: registration.username})
+  if (user != null) {
+    res.statusCode = 400
+    res.end(JSON.stringify({error:'user already exist'}))
+    return
+  }
+
+  user = {
+    username: registration.username,
+    fullname: registration.fullname,
+    phoneNumber: registration.phoneNumber,
+    passwordHash: bcrypt.hashSync(registration.password, 10)
+  }
+  const userData = await new User(user)
+  userData.save()
+
+  res.end(JSON.stringify({success: true}))
+})
+
 module.exports = router
 
