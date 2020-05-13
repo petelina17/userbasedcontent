@@ -3,7 +3,7 @@ const handleError = (res, responseObject) => {
   return (err) => {
     if (err) {
       console.log(err)
-      res.statusCode = 401
+      res.statusCode = 400
       res.end({error: err})
       return
     }

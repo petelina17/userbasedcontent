@@ -1,12 +1,12 @@
 // var createError = require('http-errors');
-var express = require("express");
-var path = require("path");
+var express = require('express');
+var path = require('path');
 // var cookieParser = require('cookie-parser');
 // var logger = require('morgan');
-var cors = require("cors");
-var db = require("./connect");
+var cors = require('cors');
+var db = require('./connect')
 
-var contentRouter = require("./routes/content");
+var contentRouter = require('./routes/index');
 
 var server = express();
 
@@ -21,7 +21,7 @@ server.use(express.json());
 // server.use(cookieParser());
 // server.use(express.static(path.join(__dirname, 'public')));
 
-server.use("/", contentRouter);
+server.use('/', contentRouter);
 
 // // catch 404 and forward to error handler
 // server.use(function(req, res, next) {

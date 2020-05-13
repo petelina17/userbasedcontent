@@ -1,3 +1,4 @@
+# Happy path test
 PUT http://localhost:9000/content
 Content-Type: application/json
 
@@ -10,8 +11,53 @@ Content-Type: application/json
 
 ###
 
+# Happy path test
 GET http://localhost:9000/contents
 
 ###
 
-POST http://localhost:9000/register
+# Happy path test
+PUT http://localhost:9000/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "123"
+}
+
+###
+
+# Wrong endpoint data for test
+PUT http://localhost:9000/login
+Content-Type: application/json
+
+{
+  "username": "bob"
+}
+
+###
+
+# Happy path test
+PUT http://localhost:9000/register
+Content-Type: application/json
+
+{
+  "username": "rob",
+  "fullname": "Robert Henrikson",
+  "phoneNumber": "123-123-123",
+  "password": "456"
+}
+
+###
+
+# Wrong endpoint data for test
+PUT http://localhost:9000/register
+Content-Type: application/json
+
+{
+  "username": "rob",
+  "fullname": "Robert Henrikson",
+  "phoneNumber": "123-123-123"
+}
+
+###
