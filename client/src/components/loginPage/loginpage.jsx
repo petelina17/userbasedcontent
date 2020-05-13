@@ -3,7 +3,30 @@ import { Link } from "react-router-dom";
 import { TextField, Button } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import "./loginpage.css";
+
 class LoginPage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      isLogged: false,
+    };
+  }
+
+  login = () => {
+    // CHECK IF EMAIL AND PASSWORD-COMBINATION EXIST
+    const loggedIn = true;
+    //IF EXIST
+    if (loggedIn) {
+      this.setState({ isLogged: false });
+      this.props.history.push("/content");
+    }
+
+    // IF NOT EXIST
+    else {
+      this.props.location.state = false;
+      this.setState({ isLogged: true });
+    }
+  };
   render() {
     return (
       <div className="login-box">
@@ -28,6 +51,15 @@ class LoginPage extends React.Component {
           <></>
         )}
 
+        {this.state.isLogged === true ? (
+          <div className="notLoggedText-div">
+            Password and email doesnt exist.
+            <br /> Try again
+          </div>
+        ) : (
+          <></>
+        )}
+
         <TextField size="small" label="Username" variant="outlined" required />
         <TextField size="small" label="Password" variant="outlined" required />
         <Button
@@ -35,6 +67,7 @@ class LoginPage extends React.Component {
           id="login-btn"
           variant="contained"
           color="secondary"
+          onClick={this.login}
         >
           LOGIN
         </Button>

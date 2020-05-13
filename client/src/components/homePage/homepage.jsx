@@ -23,7 +23,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <div className="homepage-box">
-        <p className="App-intro">{this.state.apiResponse}</p>
+        {/* <p className="App-intro">{this.state.apiResponse}</p> */}
         <div>
           <ForumIcon style={{ fontSize: "50" }} />
         </div>

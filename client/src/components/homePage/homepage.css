@@ -1,43 +1,43 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background: rgb(73, 70, 70);
+  background: rgb(73, 70, 70);
 }
 
 #root {
-    display: flex;
-    justify-content: center;
-    margin-top: 3rem;
+  display: flex;
+  justify-content: center;
 }
 
 .homepage-box {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-direction: column;
-    width: 300px;
-    height: 14rem;
-    background-color: white;
-    box-shadow: 0px 0px 25px black;
-    border-radius: 5px;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  width: 300px;
+  height: 14rem;
+  background-color: white;
+  box-shadow: 0px 0px 25px black;
+  border-radius: 5px;
 }
 
 a {
-    width: 100%;
-    text-align: center;
-    text-decoration: none;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
 }
 
 #loginbtn {
-    width: 70%;
-    color: black;
+  width: 70%;
+  color: black;
 }
 
 #registerbtn {
-    width: 70%;
-    color: white;
+  width: 70%;
+  color: white;
 }
