@@ -16,7 +16,7 @@ class HomePage extends React.Component {
       .then((res) => this.setState({ apiResponse: res }));
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.callAPI();
   }
 

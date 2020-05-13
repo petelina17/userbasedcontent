@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { TextField, Button } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import "./loginpage.css";
-
 class LoginPage extends React.Component {
   render() {
     return (
@@ -20,6 +19,15 @@ class LoginPage extends React.Component {
             LOGIN
           </span>
         </div>
+
+        {this.props.location.state === true ? (
+          <div className="usercreated-div">
+            Your user was successfully created.
+          </div>
+        ) : (
+          <></>
+        )}
+
         <TextField size="small" label="Username" variant="outlined" required />
         <TextField size="small" label="Password" variant="outlined" required />
         <Button
