@@ -23,7 +23,7 @@
   flex-direction: column;
 }
 
-#post {
+.post {
   color: black;
   width: 98%;
   padding-bottom: 0.5rem;
@@ -33,12 +33,12 @@
   font-size: 1.2rem;
 }
 
-#post>h2 {
+.post>h2 {
   text-transform: uppercase;
   font-weight: 800;
 }
 
-#post>div {
+.post>div {
   display: flex;
   width: 100%;
   justify-content: space-between;
