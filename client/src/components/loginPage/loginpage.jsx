@@ -53,9 +53,18 @@ class LoginPage extends React.Component {
                   marginLeft: '0.4rem',
                 }}
             >
-            LOGIN
-          </span>
+              LOGIN
+            </span>
           </div>
+
+          {this.props.location.state === true ? (
+              <div className="usercreated-div">
+                Your user was successfully created.
+              </div>
+          ) : (
+              <></>
+          )}
+
           <TextField size="small" label="Username" variant="outlined" required type="email"
                      onChange={(event) => {
                        this.setState({username: event.target.value})
