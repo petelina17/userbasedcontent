@@ -5,15 +5,31 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import './loginpage.css'
 
 class LoginPage extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      isLogged: false
     }
   }
 
   checkLogin = () => {
+    // CHECK IF EMAIL AND PASSWORD-COMBINATION EXIST
+    const loggedIn = true;
+    //IF EXIST
+    if (loggedIn) {
+      this.setState({ isLogged: false });
+      this.props.history.push("/content");
+    }
+
+    // IF NOT EXIST
+    else {
+      this.props.location.state = false;
+      this.setState({ isLogged: true });
+    }
+
+
     const data = {
       username: this.state.username,
       password: this.state.password
@@ -57,13 +73,22 @@ class LoginPage extends React.Component {
             </span>
           </div>
 
-          {this.props.location.state === true ? (
-              <div className="usercreated-div">
-                Your user was successfully created.
-              </div>
-          ) : (
-              <></>
-          )}
+        {this.props.location.state === true ? (
+          <div className="usercreated-div">
+            Your user was successfully created.
+          </div>
+        ) : (
+          <></>
+        )}
+
+        {this.state.isLogged === true ? (
+          <div className="notLoggedText-div">
+            Password and email doesnt exist.
+            <br /> Try again
+          </div>
+        ) : (
+          <></>
+        )}
 
           <TextField size="small" label="Username" variant="outlined" required type="email"
                      onChange={(event) => {

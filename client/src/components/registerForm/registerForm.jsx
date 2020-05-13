@@ -4,6 +4,8 @@ import "./registerForm.css";
 import { TextField, Button } from "@material-ui/core";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
+let users = [];
+
 class RegisterForm extends React.Component {
   constructor() {
     super();
@@ -97,6 +99,19 @@ class RegisterForm extends React.Component {
         emailError: "",
       });
       // SAVE VALUES OF USER TO DATABASE
+      let user = {
+        name: this.state.fullName,
+        phonenr: this.state.phoneNr,
+        email: this.state.email,
+        password: this.state.password,
+      };
+      fetch("http://localhost:9000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
       let userCreated = true;
       this.props.history.push("/login", userCreated);
     }
@@ -118,7 +133,7 @@ class RegisterForm extends React.Component {
           </span>
         </div>
         <TextField
-          id="textField"
+          id="fullName"
           onChange={this.change}
           name="fullName"
           value={this.state.fullName}
@@ -128,7 +143,7 @@ class RegisterForm extends React.Component {
           helperText={this.state.fullNameError}
         />
         <TextField
-          id="textField"
+          id="email"
           onChange={this.change}
           name="email"
           value={this.state.email}
@@ -138,7 +153,7 @@ class RegisterForm extends React.Component {
           helperText={this.state.emailError}
         />
         <TextField
-          id="textField"
+          id="phoneNr"
           onChange={this.change}
           name="phoneNr"
           value={this.state.phoneNr}
@@ -148,7 +163,7 @@ class RegisterForm extends React.Component {
           helperText={this.state.phoneError}
         />
         <TextField
-          id="textField"
+          id="password"
           type="password"
           onChange={this.change}
           name="password"
@@ -159,7 +174,6 @@ class RegisterForm extends React.Component {
           helperText={this.state.passwordError}
         />
         <TextField
-          id="textField"
           type="password"
           onChange={this.change}
           name="confirmPassword"
