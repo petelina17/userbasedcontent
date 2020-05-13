@@ -10,3 +10,11 @@
   box-shadow: 0px 0px 25px black;
   border-radius: 5px;
 }
+
+.userExists-div {
+  width: 90%;
+  color: red;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-align: center;
+}
