@@ -1,10 +1,9 @@
 import React from "react";
 import "./content.css";
 import ForumIcon from "@material-ui/icons/Forum";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Button } from "@material-ui/core";
 
+let id = 0;
 class Content extends React.Component {
   state = {
     addPost: false,
@@ -24,7 +23,8 @@ class Content extends React.Component {
     if (month < 10) month = Number(0 + month);
 
     let post = document.createElement("div");
-    post.id = "post";
+    post.id = `post${id++}`;
+    post.className = "post";
     post.innerHTML = `<h2> ${this.state.title}</h2>
     <div>
     <span> INSERT USER </span>
