@@ -281,6 +281,9 @@ class Content extends React.Component {
                 placeholder="Enter post here..."
               ></textarea>
               {this.state.edit === false ? (
+                <React.Fragment>
+                
+               
                 <Button
                   variant="contained"
                   color="secondary"
@@ -288,14 +291,31 @@ class Content extends React.Component {
                 >
                   Create Post
                 </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {this.setState({addPost:false})}}
+                >
+                  Cancel Post
+                </Button>
+                  </React.Fragment>
               ) : (
+                <React.Fragment>
                 <Button
                   variant="contained"
                   color="secondary"
                   onClick={this.editPost}
-                >
+                  >
                   Edit Post
                 </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {this.setState({addPost:false})}}
+                  >
+                  Cancel Post
+                </Button>
+                  </React.Fragment>
               )}
             </div>
           </React.Fragment>
