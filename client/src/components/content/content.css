@@ -96,7 +96,7 @@
   margin-bottom: 1rem;
 }
 
-.titleDiv>button {
+.delete, .edit {
   padding: 0.3rem;
   background-color: white;
   border: none;
