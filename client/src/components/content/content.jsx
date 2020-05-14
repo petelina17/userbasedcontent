@@ -23,11 +23,10 @@ class Content extends React.Component {
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
-    let today = `${year}-${month}-${day}`
-    
+    let today = `${year}-${month}-${day}`;
 
-    if (day < 10) day = '0' + day;
-    if (month < 10) month = '0' + month;
+    if (day < 10) day = "0" + day;
+    if (month < 10) month = "0" + month;
 
     let postDiv = document.createElement("div");
     postDiv.id = `post${id++}`;
@@ -47,7 +46,6 @@ class Content extends React.Component {
       text: this.state.text,
       date: today,
       username: this.props.location.state,
-      
     };
     fetch("http://localhost:9000/content", {
       method: "POST",
@@ -56,27 +54,55 @@ class Content extends React.Component {
       },
       body: JSON.stringify(post),
     })
-    .then((res) => res.json())
-    .catch((err) => {
-      console.log("[ERROR]", err);
-    })
-    .then((res) => {
-      console.log("login response: ", res);
-      if (res.createPost === true) {
-        console.log('createPost is true')
-      }
-      console.log('createPost is not True')
-    });
-
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log("[ERROR]", err);
+      })
+      .then((res) => {
+        console.log("login response: ", res);
+        if (res.createPost === true) {
+          console.log("createPost is true");
+        }
+        console.log("createPost is not True");
+      });
 
     this.setState({ addPost: false });
     document.getElementById("allContent").appendChild(postDiv);
     this.setState({ post: "" });
     this.setState({ title: "" });
   };
-componentDidMount(){
-  // GO THROUGH ALL POSTS IN DATABASE AND POST THEM
-}
+
+  componentDidMount() {
+    fetch("http://localhost:9000/content", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log("[ERROR]", err);
+      })
+      .then((res) => {
+        console.log("get response: ", res);
+        for (let i = 0; i < res.length; i++) {
+          console.log(res[i]);
+          let postDiv = document.createElement("div");
+          postDiv.id = `post${id++}`;
+          postDiv.className = "post";
+          postDiv.innerHTML = `<div class="titleDiv"><h2> ${res[i].title}</h2>
+                              <button class='click'> X </button>
+                              </div>
+                              <div>
+                              <span> ${res[i].username} </span>
+                              <span> ${res[i].date}</span>
+                              </div>
+                              <p>${res[i].date}</p>
+                              `;
+          document.getElementById("allContent").appendChild(postDiv);
+        }
+      });
+  }
 
   componentDidUpdate() {
     let click = document.querySelector(".click");

@@ -3,7 +3,7 @@ POST http://localhost:9000/content
 Content-Type: application/json
 
 {
-  "title": "Fairy-tale",
+  "title": "Fairy-mammas",
   "username": "Astrid L.",
   "date": "2020-05-11",
   "text": "lorem ipsum dolor sit amet"
@@ -12,7 +12,7 @@ Content-Type: application/json
 ###
 
 # Happy path test
-GET http://localhost:9000/contents
+GET http://localhost:9000/content
 
 ###
 

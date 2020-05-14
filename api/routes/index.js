@@ -15,7 +15,7 @@ router.put("/content", async (req, res, next) => {
   const saved = content.save(helpers.handleError(res, "OK"));
 });
 
-router.get("/contents", (req, res) => {
+router.get("/content", (req, res) => {
   Content.find({}, (err, contents) => {
     const handler = helpers.handleError(
       res,
@@ -27,9 +27,7 @@ router.get("/contents", (req, res) => {
 
 router.post("/login", async (req, res) => {
   const login = req.body;
-  console.log(login);
-  console.log(login.username);
-  console.log(login.password);
+
   if (login.username == null || login.password == null) {
     res.statusCode = 401;
     res.end(JSON.stringify({ error: "invalid username or password" }));
@@ -38,7 +36,7 @@ router.post("/login", async (req, res) => {
 
   // check if username exists in database
   const user = await User.findOne({ username: login.username });
-  console.log(user);
+
   if (user == null) {
     res.statusCode = 401;
     res.end(JSON.stringify({ error: "invalid username or password" }));
@@ -94,7 +92,7 @@ router.post("/register", async (req, res) => {
 
 router.post("/content", async (req, res) => {
   const forumpost = req.body;
-  console.log(forumpost)
+  console.log(forumpost);
   let post = {
     title: forumpost.title,
     username: forumpost.username,
