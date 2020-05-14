@@ -95,3 +95,11 @@
   justify-content: space-evenly;
   margin-bottom: 1rem;
 }
+
+.titleDiv>button {
+  padding: 0.3rem;
+  background-color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -10,6 +10,11 @@ class Content extends React.Component {
     post: "",
     title: "",
   };
+
+  deletePost = (e) => {
+    // CODE FOR DELETE POST
+    console.log(e);
+  };
   addPost = () => {
     this.setState({ addPost: true });
   };
@@ -25,7 +30,9 @@ class Content extends React.Component {
     let post = document.createElement("div");
     post.id = `post${id++}`;
     post.className = "post";
-    post.innerHTML = `<h2> ${this.state.title}</h2>
+    post.innerHTML = `<div class="titleDiv"><h2> ${this.state.title}</h2>
+    <button class='click'> X </button>
+    </div>
     <div>
     <span> INSERT USER </span>
     <span> ${year}-${month}-${day}</span>
@@ -38,6 +45,13 @@ class Content extends React.Component {
     this.setState({ post: "" });
     this.setState({ title: "" });
   };
+
+  componentDidUpdate() {
+    let click = document.querySelector(".click");
+    if (click) {
+      click.addEventListener("click", this.deletePost);
+    }
+  }
 
   logOut = () => {
     this.props.history.push("/");
