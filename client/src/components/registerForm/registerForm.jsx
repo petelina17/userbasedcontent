@@ -12,6 +12,7 @@ class RegisterForm extends React.Component {
     this.state = {
       userCreated: false,
       fullName: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -104,13 +105,14 @@ class RegisterForm extends React.Component {
       // SAVE VALUES OF USER TO DATABASE
       let user = {
         fullname: this.state.fullName,
+        username: this.state.username,
         phoneNumber: this.state.phoneNr,
         email: this.state.email,
         password: this.state.password,
       };
 
       fetch("http://localhost:9000/register", {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
         },
@@ -163,6 +165,15 @@ class RegisterForm extends React.Component {
           label="Full name"
           variant="outlined"
           helperText={this.state.fullNameError}
+        />
+        <TextField
+          id="username"
+          onChange={this.change}
+          name="username"
+          value={this.state.username}
+          size="small"
+          label="Username"
+          variant="outlined"
         />
         <TextField
           id="email"

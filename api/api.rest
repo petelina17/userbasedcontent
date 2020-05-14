@@ -1,5 +1,5 @@
 # Happy path test
-PUT http://localhost:9000/content
+POST http://localhost:9000/content
 Content-Type: application/json
 
 {
