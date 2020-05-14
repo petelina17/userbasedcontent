@@ -19,7 +19,8 @@ router.post("/content", async (req, res, next) => {
 
   // go to mongodb ...
   const content = await new Content(post);
-  const saved = content.save(helpers.handleError(res, JSON.stringify({ createPost: true })));
+  const responseData = JSON.stringify({ createPost: true, blogPost: content })
+  const saved = content.save(helpers.handleError(res, responseData));
 });
 
 // READ ALL BLOGPOSTS FROM DATABASE
@@ -126,7 +127,7 @@ router.put("/content/:id", async (req, res) => {
 
 // DELETE BLOGPOST BY ID
 router.delete("/content/:id", async (req, res) => {
-  // req.params.id
+  console.log('delete req.params.id:', req.params.id)
   const found = await Content.findById(req.params.id)
   if (found == null) {
     res.statusCode = 401
@@ -134,8 +135,10 @@ router.delete("/content/:id", async (req, res) => {
     return
   }
 
+  console.log('delete id:', found._id)
+
   Content.deleteOne(
-      {_id: req.params.id},
+      {_id: found._id},
       helpers.handleError(res, JSON.stringify({ deletePost: true }))
   )
 })

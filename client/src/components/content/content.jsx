@@ -12,9 +12,14 @@ class Content extends React.Component {
     edit: false,
     text: '',
     title: '',
+    blogPosts: [],
+    username: 'unknown',
   }
 
   componentDidMount() {
+    console.log('username:', this.props.location.state)
+    this.setState({username: this.props.location.state})
+
     fetch('http://localhost:9000/contents', {
       method: 'GET',
       headers: {
@@ -26,6 +31,23 @@ class Content extends React.Component {
           console.log('[ERROR]', err)
         })
         .then((res) => {
+          const collection = []
+          res.forEach((content, i) => {
+            const blogPost = {
+              _id: content._id,
+              postId: `post${id++}`,
+              title: content.title,
+              username: content.username,
+              date: content.date,
+              text: content.text,
+              currentId: undefined,
+              readOnly: this.state.username !== res[i].username
+            }
+            collection.push(blogPost)
+          })
+          this.setState({blogPosts: collection})
+
+          { /*
           for (let i = 0; i < res.length; i++) {
             if (this.props.location.state === res[i].username) {
               let postDiv = document.createElement('div')
@@ -65,56 +87,31 @@ class Content extends React.Component {
           document.querySelectorAll('.edit').forEach((item) => {
             item.addEventListener('click', this.getIdOfPost)
           })
+
+          */
+          }
+
+
         })
   }
 
-  getIdOfPost = (e) => {
+  getIdOfPost = (e, id) => {
+    let blogPost = this.state.blogPosts.find(x => x.postId === id)
+    if (blogPost == null) {
+      console.log('[ERROR] blogPost is null, id:', id)
+      return
+    }
 
-    let postDiv = e.toElement.parentElement.parentElement.parentElement
-    let title = e.toElement.parentElement.parentElement.firstChild.innerText
-    let username =
-        e.toElement.parentElement.parentElement.nextSibling.nextSibling
-            .children[0].innerText
-    let date =
-        e.toElement.parentElement.parentElement.nextSibling.nextSibling
-            .children[1].innerText
-    let post =
-        e.toElement.parentElement.parentElement.nextSibling.nextSibling
-            .nextSibling.nextSibling.innerText
+    this.props.history.push(`/content/${blogPost._id}`)
+    e.preventDefault()
 
-    fetch('http://localhost:9000/contents', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+    this.setState({addPost: true})
+    this.setState({
+      edit: true,
+      text: blogPost.text,
+      title: blogPost.title,
+      currentId: blogPost._id
     })
-        .then((res) => res.json())
-        .catch((err) => {
-          console.log('[ERROR]', err)
-        })
-        .then((res) => {
-          // console.log(res);
-          // console.log(res[0].title, res[0].date, res[0].username, res[0].text);
-          res.forEach((item) => {
-            if (
-                title === item.title &&
-                username === item.username &&
-                date === item.date &&
-                post === item.text
-            ) {
-              postID = item._id
-              this.props.history.push(`/content/${item._id}`)
-              e.preventDefault()
-              return
-            }
-          })
-
-          this.setState({addPost: true})
-          this.setState({edit: true})
-
-        })
-
-
   }
 
   editPost = (e) => {
@@ -128,11 +125,13 @@ class Content extends React.Component {
 
     let editedPost = {
       title: this.state.title,
-      username: this.props.location.state,
+      username: this.state.username,
       text: this.state.text,
       date: today,
     }
-    fetch(`http://localhost:9000/content/${postID}`, {
+    const temp = JSON.parse(JSON.stringify(this.state))
+
+    fetch(`http://localhost:9000/content/${this.state.currentId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -144,29 +143,23 @@ class Content extends React.Component {
           console.log('[ERROR]', err)
         })
         .then((res) => {
+          const found = this.state.blogPosts.find(x => x._id === temp.currentId)
+          // console.log('after edit, found blog post:', found)
+          if (found) {
+            found.text = temp.text
+            found.title = temp.title
+          }
           this.props.history.push('/content')
           console.log('edit response: ', res)
         })
+
     this.setState({addPost: false})
-    this.setState({edit: false})
-    this.setState({title: ''})
-    this.setState({text: ''})
+    this.setState({edit: false, title: '', text: '', currentId: undefined})
   }
 
-  deletePost = (e) => {
-    let postDiv = e.toElement.parentElement.parentElement.parentElement
-    let title = e.toElement.parentElement.parentElement.firstChild.innerText
-    let username =
-        e.toElement.parentElement.parentElement.nextSibling.nextSibling
-            .children[0].innerText
-    let date =
-        e.toElement.parentElement.parentElement.nextSibling.nextSibling
-            .children[1].innerText
-    let post =
-        e.toElement.parentElement.parentElement.nextSibling.nextSibling
-            .nextSibling.nextSibling.innerText
-    console.log(post)
-    fetch('http://localhost:9000/content', {
+  deletePost = (e, id) => {
+
+    fetch(`http://localhost:9000/content/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -177,6 +170,8 @@ class Content extends React.Component {
           console.log('[ERROR]', err)
         })
         .then((res) => {
+          let collection = [...this.state.blogPosts.filter(x => x._id !== id)]
+          this.setState({blogPosts: [...collection]})
           console.log('delete response: ', res)
         })
     console.log(e)
@@ -202,7 +197,7 @@ class Content extends React.Component {
     </div>
     </div>
     <div>
-    <span> ${this.props.location.state} </span>
+    <span> ${this.state.username} </span>
     <span> ${year}-${month}-${day}</span>
     </div>
     <p>${this.state.text}</p>
@@ -210,7 +205,7 @@ class Content extends React.Component {
 
     let post = {
       title: this.state.title,
-      username: this.props.location.state,
+      username: this.state.username,
       text: this.state.text,
       date: today,
     }
@@ -227,11 +222,17 @@ class Content extends React.Component {
           console.log('[ERROR]', err)
         })
         .then((res) => {
-          console.log('login response: ', res)
+          console.log('POST content response: ', res)
           if (res.createPost === true) {
+
+            console.log('blog post added:', res.blogPost)
+            const collection = this.state.blogPosts
+            collection.push(res.blogPost)
+            this.setState({blogPosts: collection})
+
             console.log('createPost is true')
             this.setState({addPost: false})
-            document.getElementById('allContent').appendChild(postDiv)
+            // document.getElementById('allContent').appendChild(postDiv)
             this.setState({post: ''})
             this.setState({title: ''})
           }
@@ -246,13 +247,41 @@ class Content extends React.Component {
             <header id="header">
               <ForumIcon style={{fontSize: '50'}}/>
             </header>
-            <main id="allContent"></main>
+
+            <main id="allContent">
+              {
+                this.state.blogPosts.map(blogPost =>
+                    <div id={blogPost.postId} className="post" key={blogPost.postId}>
+                      <div className="titleDiv">
+                        <h2>{blogPost.title}</h2>
+                        <div className="delete-edit-div">
+                          <button className="delete" onClick={(e) => {
+                            this.deletePost(e, blogPost._id)
+                          }}>X
+                          </button>
+                          <button className="edit" onClick={(e) => {
+                            this.getIdOfPost(e, blogPost.postId)
+                          }}>EDIT
+                          </button>
+                        </div>
+                      </div>
+                      <div>
+                        <span>{blogPost.username}</span>
+                        <span>{blogPost.date}</span>
+                      </div>
+                      <p>{blogPost.text}</p>
+                    </div>
+                )
+              }
+            </main>
+
+
           </div>
           <div className="buttondiv">
             <Button
                 variant="contained"
                 onClick={() => {
-                  this.setState({addPost: true})
+                  this.setState({addPost: true, title: '', text: '', edit: false})
                 }}
             >
               Add post
