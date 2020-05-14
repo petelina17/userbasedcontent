@@ -25,7 +25,7 @@ router.get("/contents", (req, res) => {
   });
 });
 
-router.put("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const login = req.body;
   console.log(login);
   console.log(login.username);
@@ -57,7 +57,7 @@ router.put("/login", async (req, res) => {
   res.end(JSON.stringify({ login: true }));
 });
 
-router.put("/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   const registration = req.body;
 
   if (
@@ -89,8 +89,22 @@ router.put("/register", async (req, res) => {
   };
   const userData = await new User(user);
   userData.save();
+  res.json({ success: true });
+});
 
-  res.end(JSON.stringify({ success: true }));
+router.post("/content", async (req, res) => {
+  const forumpost = req.body;
+  console.log(forumpost)
+  let post = {
+    title: forumpost.title,
+    username: forumpost.username,
+    text: forumpost.text,
+    date: forumpost.date,
+  };
+  const userPost = await new Content(post);
+  userPost.save();
+
+  res.end(JSON.stringify({ createPost: true }));
 });
 
 module.exports = router;

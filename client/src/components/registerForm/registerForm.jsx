@@ -112,7 +112,7 @@ class RegisterForm extends React.Component {
       };
 
       fetch("http://localhost:9000/register", {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
         },

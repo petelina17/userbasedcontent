@@ -50,20 +50,33 @@ class Content extends React.Component {
       
     };
     fetch("http://localhost:9000/content", {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
       },
       body: JSON.stringify(post),
     })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.log("[ERROR]", err);
+    })
+    .then((res) => {
+      console.log("login response: ", res);
+      if (res.createPost === true) {
+        console.log('createPost is true')
+      }
+      console.log('createPost is not True')
+    });
+
+
     this.setState({ addPost: false });
     document.getElementById("allContent").appendChild(postDiv);
     this.setState({ post: "" });
     this.setState({ title: "" });
   };
-  
-  //SAVE POSTS IN DATABASE
-
+componentDidMount(){
+  // GO THROUGH ALL POSTS IN DATABASE AND POST THEM
+}
 
   componentDidUpdate() {
     let click = document.querySelector(".click");

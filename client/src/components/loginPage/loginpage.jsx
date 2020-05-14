@@ -35,7 +35,7 @@ class LoginPage extends React.Component {
     };
 
     fetch("http://localhost:9000/login", {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-type": "application/json; charset=UTF-8", // Indicates the content
       },
