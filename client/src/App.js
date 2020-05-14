@@ -14,6 +14,7 @@ function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterForm} />
         <Route path="/content" component={Content} />
+        <Route path="/content:id" component={Content} />
       </Switch>
     </Router>
   );
