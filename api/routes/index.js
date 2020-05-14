@@ -28,14 +28,17 @@ router.get("/contents", (req, res) => {
 router.put("/login", async (req, res) => {
   const login = req.body;
   console.log(login);
-  if (login.email == null || login.password == null) {
+  console.log(login.username);
+  console.log(login.password);
+  if (login.username == null || login.password == null) {
     res.statusCode = 401;
     res.end(JSON.stringify({ error: "invalid username or password" }));
     return;
   }
 
   // check if username exists in database
-  const user = await User.findOne({ email: login.email });
+  const user = await User.findOne({ username: login.username });
+  console.log(user);
   if (user == null) {
     res.statusCode = 401;
     res.end(JSON.stringify({ error: "invalid username or password" }));
@@ -56,10 +59,10 @@ router.put("/login", async (req, res) => {
 
 router.put("/register", async (req, res) => {
   const registration = req.body;
-  console.log(registration);
 
   if (
     registration.email === null ||
+    registration.username === null ||
     registration.password === null ||
     registration.fullname === null ||
     registration.phoneNumber === null
@@ -70,7 +73,7 @@ router.put("/register", async (req, res) => {
   }
 
   // check if username exists in database
-  let user = await User.findOne({ email: registration.email });
+  let user = await User.findOne({ email: registration.username });
   if (user != null) {
     res.statusCode = 400;
     res.end(JSON.stringify({ error: "user already exist" }));
@@ -80,6 +83,7 @@ router.put("/register", async (req, res) => {
   user = {
     email: registration.email,
     fullname: registration.fullname,
+    username: registration.username,
     phoneNumber: registration.phoneNumber,
     passwordHash: bcrypt.hashSync(registration.password, 10),
   };

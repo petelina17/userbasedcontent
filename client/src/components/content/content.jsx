@@ -7,7 +7,7 @@ let id = 0;
 class Content extends React.Component {
   state = {
     addPost: false,
-    post: "",
+    text: "",
     title: "",
   };
 
@@ -23,28 +23,47 @@ class Content extends React.Component {
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
+    let today = `${year}-${month}-${day}`
+    
 
-    if (day < 10) day = 0 + day;
-    if (month < 10) month = Number(0 + month);
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
 
-    let post = document.createElement("div");
-    post.id = `post${id++}`;
-    post.className = "post";
-    post.innerHTML = `<div class="titleDiv"><h2> ${this.state.title}</h2>
+    let postDiv = document.createElement("div");
+    postDiv.id = `post${id++}`;
+    postDiv.className = "post";
+    postDiv.innerHTML = `<div class="titleDiv"><h2> ${this.state.title}</h2>
     <button class='click'> X </button>
     </div>
     <div>
-    <span> INSERT USER </span>
+    <span> ${this.props.location.state} </span>
     <span> ${year}-${month}-${day}</span>
     </div>
     <p>${this.state.post}</p>
     `;
 
+    let post = {
+      title: this.state.title,
+      text: this.state.text,
+      date: today,
+      username: this.props.location.state,
+      
+    };
+    fetch("http://localhost:9000/content", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(post),
+    })
     this.setState({ addPost: false });
-    document.getElementById("allContent").appendChild(post);
+    document.getElementById("allContent").appendChild(postDiv);
     this.setState({ post: "" });
     this.setState({ title: "" });
   };
+  
+  //SAVE POSTS IN DATABASE
+
 
   componentDidUpdate() {
     let click = document.querySelector(".click");

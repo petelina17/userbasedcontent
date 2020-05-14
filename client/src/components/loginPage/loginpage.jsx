@@ -8,7 +8,7 @@ class LoginPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      email: "",
+      username: "",
       password: "",
       isLogged: false,
     };
@@ -30,7 +30,7 @@ class LoginPage extends React.Component {
     // }
 
     const data = {
-      email: this.state.email,
+      username: this.state.username,
       password: this.state.password,
     };
 
@@ -48,9 +48,9 @@ class LoginPage extends React.Component {
       .then((res) => {
         console.log("login response: ", res);
         if (res.login === true) {
-          // alert('You are logged in!')
-          this.props.history.push("/content", "Johan");
+          this.props.history.push("/content", this.state.username);
         }
+        this.props.location.state = false
         this.setState({ isLogged: true });
       });
   };
@@ -90,12 +90,13 @@ class LoginPage extends React.Component {
 
         <TextField
           size="small"
-          label="Email"
+          label="Username"
           variant="outlined"
           required
-          type="email"
+          type="text"
+          value={this.state.username}
           onChange={(event) => {
-            this.setState({ email: event.target.value });
+            this.setState({ username: event.target.value });
           }}
         />
         <TextField
