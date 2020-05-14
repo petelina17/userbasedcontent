@@ -46,52 +46,6 @@ class Content extends React.Component {
             collection.push(blogPost)
           })
           this.setState({blogPosts: collection})
-
-          { /*
-          for (let i = 0; i < res.length; i++) {
-            if (this.props.location.state === res[i].username) {
-              let postDiv = document.createElement('div')
-              postDiv.id = `post${id++}`
-              postDiv.className = 'post'
-              postDiv.innerHTML = `<div class="titleDiv"><h2> ${res[i].title}</h2>
-                              <div class='delete-edit-div'>
-                              <button class='delete'> X </button>
-                              <button class='edit'> EDIT </button>
-                              </div>
-                              </div>
-                              <div>
-                              <span> ${res[i].username} </span>
-                              <span> ${res[i].date}</span>
-                              </div>
-                              <p>${res[i].text}</p>
-                              `
-              document.getElementById('allContent').appendChild(postDiv)
-            } else {
-              let postDiv = document.createElement('div')
-              postDiv.id = `post${id++}`
-              postDiv.className = 'post'
-              postDiv.innerHTML = `<div class="titleDiv"><h2> ${res[i].title}</h2>
-                              </div>
-                              <div>
-                              <span> ${res[i].username} </span>
-                              <span> ${res[i].date}</span>
-                              </div>
-                              <p>${res[i].text}</p>
-                              `
-              document.getElementById('allContent').appendChild(postDiv)
-            }
-          }
-          document.querySelectorAll('.delete').forEach((item) => {
-            item.addEventListener('click', this.deletePost)
-          })
-          document.querySelectorAll('.edit').forEach((item) => {
-            item.addEventListener('click', this.getIdOfPost)
-          })
-
-          */
-          }
-
-
         })
   }
 
@@ -254,16 +208,22 @@ class Content extends React.Component {
                     <div id={blogPost.postId} className="post" key={blogPost.postId}>
                       <div className="titleDiv">
                         <h2>{blogPost.title}</h2>
-                        <div className="delete-edit-div">
-                          <button className="delete" onClick={(e) => {
-                            this.deletePost(e, blogPost._id)
-                          }}>X
-                          </button>
-                          <button className="edit" onClick={(e) => {
-                            this.getIdOfPost(e, blogPost.postId)
-                          }}>EDIT
-                          </button>
-                        </div>
+
+                        {!blogPost.readOnly ?
+                            <div className="delete-edit-div">
+                              <button className="delete" onClick={(e) => {
+                                this.deletePost(e, blogPost._id)
+                              }}>X
+                              </button>
+                              <button className="edit" onClick={(e) => {
+                                this.getIdOfPost(e, blogPost.postId)
+                              }}>EDIT
+                              </button>
+                            </div>
+                            :
+                            ''
+                        }
+
                       </div>
                       <div>
                         <span>{blogPost.username}</span>
