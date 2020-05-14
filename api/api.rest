@@ -10,25 +10,14 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:9000/content
-Content-Type: application/json
 
-{
-  "title": "Fairy-mammas",
-  "username": "Astrid L.",
-  "date": "2020-05-11",
-  "text": "lorem ipsum dolor sit amet"
-}
+# Happy path test
+GET http://localhost:9000/contents
 
 ###
 
 # Happy path test
-GET http://localhost:9000/content
-
-###
-
-# Happy path test
-PUT http://localhost:9000/login
+POST http://localhost:9000/login
 Content-Type: application/json
 
 {
@@ -39,7 +28,7 @@ Content-Type: application/json
 ###
 
 # Wrong endpoint data for test
-PUT http://localhost:9000/login
+POST http://localhost:9000/login
 Content-Type: application/json
 
 {
@@ -49,7 +38,7 @@ Content-Type: application/json
 ###
 
 # Happy path test
-PUT http://localhost:9000/register
+POST http://localhost:9000/register
 Content-Type: application/json
 
 {
@@ -62,7 +51,7 @@ Content-Type: application/json
 ###
 
 # Wrong endpoint data for test
-PUT http://localhost:9000/register
+POST http://localhost:9000/register
 Content-Type: application/json
 
 {

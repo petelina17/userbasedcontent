@@ -6,14 +6,20 @@ var bcrypt = require("bcrypt");
 var helpers = require("./helpers");
 
 // CREATE NEW BLOGPOST
-router.put("/content", async (req, res, next) => {
+router.post("/content", async (req, res, next) => {
   // read req ..
-  const data = req.body;
+  const forumpost = req.body;
+  let post = {
+    title: forumpost.title,
+    username: forumpost.username,
+    text: forumpost.text,
+    date: forumpost.date,
+  };
   // console.log('new content: ' , newContent)
 
   // go to mongodb ...
-  const content = await new Content(data);
-  const saved = content.save(helpers.handleError(res, "OK"));
+  const content = await new Content(post);
+  const saved = content.save(helpers.handleError(res, JSON.stringify({ createPost: true })));
 });
 
 // READ ALL BLOGPOSTS FROM DATABASE
@@ -27,6 +33,7 @@ router.get("/contents", (req, res) => {
   });
 });
 
+// TRY TO LOGIN
 router.post("/login", async (req, res) => {
   const login = req.body;
 
@@ -57,15 +64,21 @@ router.post("/login", async (req, res) => {
   res.end(JSON.stringify({ login: true }));
 });
 
+// REGISTER NEW USER
 router.post("/register", async (req, res) => {
   const registration = req.body;
+  console.log('registration:', registration)
 
+  // ***************************************************************
+  // it should be '==' here instead of '===' !
+  //     to check both 'null' and 'undefined' values
+  // ***************************************************************
   if (
-    registration.email === null ||
-    registration.username === null ||
-    registration.password === null ||
-    registration.fullname === null ||
-    registration.phoneNumber === null
+    registration.email == null ||
+    registration.username == null ||
+    registration.password == null ||
+    registration.fullname == null ||
+    registration.phoneNumber == null
   ) {
     res.statusCode = 400;
     res.end(JSON.stringify({ error: "incorrect input" }));
@@ -92,30 +105,18 @@ router.post("/register", async (req, res) => {
   res.json({ success: true });
 });
 
-router.post("/content", async (req, res) => {
-  const forumpost = req.body;
-  console.log(forumpost);
-  let post = {
-    title: forumpost.title,
-    username: forumpost.username,
-    text: forumpost.text,
-    date: forumpost.date,
-  };
-  const userPost = await new Content(post);
-  userPost.save();
-
-  res.end(JSON.stringify({ createPost: true }));
-});
-
-router.put("/content:", async (req, res) => {
-  const editedPost = req.body;
-  console.log(editedPost);
+// EDIT BLOGPOST BY ID
+router.put("/content/:id", async (req, res) => {
+  let editedPost = req.body;
+  console.log('edit post:', editedPost);
   editedPost = {
     title: forumpost.title,
     username: forumpost.username,
     text: forumpost.text,
     date: forumpost.date,
   };
+
+  //...
 
   res.end(JSON.stringify({ editPost: true }));
 });
