@@ -26,19 +26,13 @@ router.get("/content", (req, res) => {
   });
 });
 
-router.post("/content", async (req, res) => {
-  const forumpost = req.body;
+router.post("/content/:id", (req, res) => {
+  const forumpost = req.params.id;
   console.log(forumpost);
-  let post = {
-    title: forumpost.title,
-    username: forumpost.username,
-    text: forumpost.text,
-    date: forumpost.date,
-  };
-  const userPost = await new Content(post);
-  userPost.save();
+  // const userPost = await new Content(post);
+  // userPost.save();
 
-  res.end(JSON.stringify({ createPost: true }));
+  // res.end(JSON.stringify({ createPost: true }));
 });
 
 module.exports = router;

@@ -4,6 +4,7 @@ import ForumIcon from "@material-ui/icons/Forum";
 import { Button } from "@material-ui/core";
 
 let id = 0;
+let postID;
 class Content extends React.Component {
   state = {
     addPost: false,
@@ -13,7 +14,6 @@ class Content extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props.location.state);
     fetch("http://localhost:9000/content", {
       method: "GET",
       headers: {
@@ -25,7 +25,6 @@ class Content extends React.Component {
         console.log("[ERROR]", err);
       })
       .then((res) => {
-        console.log("get response: ", res);
         for (let i = 0; i < res.length; i++) {
           if (this.props.location.state === res[i].username) {
             let postDiv = document.createElement("div");
@@ -63,20 +62,62 @@ class Content extends React.Component {
           item.addEventListener("click", this.deletePost);
         });
         document.querySelectorAll(".edit").forEach((item) => {
-          item.addEventListener("click", (e) => {
-            console.log(e);
-            this.setState({ addPost: true });
-            this.setState({ edit: true });
-          });
+          item.addEventListener("click", this.checkWhichEditWasPushed);
         });
       });
   }
+
+  checkWhichEditWasPushed = (e) => {
+    let postDiv = e.toElement.parentElement.parentElement.parentElement;
+    let title = e.toElement.parentElement.parentElement.firstChild.innerText;
+    let username =
+      e.toElement.parentElement.parentElement.nextSibling.nextSibling
+        .children[0].innerText;
+    let date =
+      e.toElement.parentElement.parentElement.nextSibling.nextSibling
+        .children[1].innerText;
+    let post =
+      e.toElement.parentElement.parentElement.nextSibling.nextSibling
+        .nextSibling.nextSibling.innerText;
+    // console.log(title, date, username, post);
+    fetch("http://localhost:9000/content", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log("[ERROR]", err);
+      })
+      .then((res) => {
+        // console.log(res);
+        // console.log(res[0].title, res[0].date, res[0].username, res[0].text);
+        res.forEach((item) => {
+          if (
+            title === item.title &&
+            username === item.username &&
+            date === item.date &&
+            post === item.text
+          ) {
+            postID = item._id;
+            this.props.history.push(`/content/${item._id}`);
+            e.preventDefault();
+            return;
+          }
+        });
+        this.setState({ addPost: true });
+        this.setState({ edit: true });
+      });
+  };
   editPost = (e) => {
     let date = new Date();
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
     let today = `${year}-${month}-${day}`;
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
 
     let editedPost = {
       title: this.state.title,
@@ -84,8 +125,7 @@ class Content extends React.Component {
       text: this.state.text,
       date: today,
     };
-
-    fetch("http://localhost:9000/content", {
+    fetch(`http://localhost:9000/content/:${postID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
@@ -97,6 +137,7 @@ class Content extends React.Component {
         console.log("[ERROR]", err);
       })
       .then((res) => {
+        this.props.history.push("/content");
         console.log("edit response: ", res);
       });
     this.setState({ addPost: false });

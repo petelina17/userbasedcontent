@@ -10,6 +10,17 @@ Content-Type: application/json
 }
 
 ###
+PUT http://localhost:9000/content
+Content-Type: application/json
+
+{
+  "title": "Fairy-mammas",
+  "username": "Astrid L.",
+  "date": "2020-05-11",
+  "text": "lorem ipsum dolor sit amet"
+}
+
+###
 
 # Happy path test
 GET http://localhost:9000/content
