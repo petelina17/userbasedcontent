@@ -62,12 +62,13 @@ class Content extends React.Component {
           item.addEventListener("click", this.deletePost);
         });
         document.querySelectorAll(".edit").forEach((item) => {
-          item.addEventListener("click", this.checkWhichEditWasPushed);
+          item.addEventListener("click", this.getIdOfPost);
         });
       });
   }
 
-  checkWhichEditWasPushed = (e) => {
+  getIdOfPost = (e) => {
+
     let postDiv = e.toElement.parentElement.parentElement.parentElement;
     let title = e.toElement.parentElement.parentElement.firstChild.innerText;
     let username =
@@ -79,38 +80,42 @@ class Content extends React.Component {
     let post =
       e.toElement.parentElement.parentElement.nextSibling.nextSibling
         .nextSibling.nextSibling.innerText;
-    // console.log(title, date, username, post);
-    fetch("http://localhost:9000/content", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
+
+          fetch("http://localhost:9000/content", {
+            method: "GET",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
       },
     })
-      .then((res) => res.json())
-      .catch((err) => {
-        console.log("[ERROR]", err);
-      })
-      .then((res) => {
-        // console.log(res);
-        // console.log(res[0].title, res[0].date, res[0].username, res[0].text);
-        res.forEach((item) => {
-          if (
+    .then((res) => res.json())
+    .catch((err) => {
+      console.log("[ERROR]", err);
+    })
+    .then((res) => {
+      // console.log(res);
+      // console.log(res[0].title, res[0].date, res[0].username, res[0].text);
+      res.forEach((item) => {
+        if (
             title === item.title &&
             username === item.username &&
             date === item.date &&
             post === item.text
-          ) {
-            postID = item._id;
-            this.props.history.push(`/content/${item._id}`);
-            e.preventDefault();
-            return;
-          }
+            ) {
+              postID = item._id;
+              this.props.history.push(`/content/${item._id}`);
+              e.preventDefault();
+              return;
+            }
+          });
+          
+          this.setState({ addPost: true });
+          this.setState({ edit: true });
+          
         });
-        this.setState({ addPost: true });
-        this.setState({ edit: true });
-      });
-  };
-  editPost = (e) => {
+        
+      
+      };
+      editPost = (e) => {
     let date = new Date();
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
