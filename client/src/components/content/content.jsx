@@ -116,6 +116,7 @@ class Content extends React.Component {
 
 
   }
+
   editPost = (e) => {
     let date = new Date()
     let year = date.getFullYear()
@@ -131,7 +132,7 @@ class Content extends React.Component {
       text: this.state.text,
       date: today,
     }
-    fetch(`http://localhost:9000/content/:${postID}`, {
+    fetch(`http://localhost:9000/content/${postID}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -151,6 +152,7 @@ class Content extends React.Component {
     this.setState({title: ''})
     this.setState({text: ''})
   }
+
   deletePost = (e) => {
     let postDiv = e.toElement.parentElement.parentElement.parentElement
     let title = e.toElement.parentElement.parentElement.firstChild.innerText
@@ -270,7 +272,7 @@ class Content extends React.Component {
                 <div className="createPost-div">
                   <h1>Title</h1>
                   <input
-                      value={this.state.title}
+                      defaultValue={this.state.title}
                       onChange={(event) =>
                           this.setState({title: event.target.value})
                       }
@@ -279,7 +281,7 @@ class Content extends React.Component {
                   />
                   <h1>Post</h1>
                   <textarea
-                      value={this.state.text}
+                      defaultValue={this.state.text}
                       onChange={(event) =>
                           this.setState({text: event.target.value})
                       }

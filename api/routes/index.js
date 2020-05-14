@@ -107,18 +107,37 @@ router.post("/register", async (req, res) => {
 
 // EDIT BLOGPOST BY ID
 router.put("/content/:id", async (req, res) => {
-  let editedPost = req.body;
-  console.log('edit post:', editedPost);
-  editedPost = {
-    title: forumpost.title,
-    username: forumpost.username,
-    text: forumpost.text,
-    date: forumpost.date,
-  };
+  console.log('query id:', req.params.id)
+  const found = await Content.findById(req.params.id)
+  if (found == null) {
+    res.statusCode = 401
+    res.end(JSON.stringify({ error: "invalid blog-post id: " + req.params.id }))
+    return
+  }
 
-  //...
+  const data = req.body
+  found.title = data.title
+  found.username = data.username
+  found.text = data.text
+  found.date = data.date
 
-  res.end(JSON.stringify({ editPost: true }));
+  const saved = found.save(helpers.handleError(res, JSON.stringify({ editPost: true })));
 });
+
+// DELETE BLOGPOST BY ID
+router.delete("/content/:id", async (req, res) => {
+  // req.params.id
+  const found = await Content.findById(req.params.id)
+  if (found == null) {
+    res.statusCode = 401
+    res.end(JSON.stringify({ error: "invalid blog-post id: " + req.params.id }))
+    return
+  }
+
+  Content.deleteOne(
+      {_id: req.params.id},
+      helpers.handleError(res, JSON.stringify({ deletePost: true }))
+  )
+})
 
 module.exports = router;
