@@ -78,20 +78,20 @@ class Content extends React.Component {
     let post =
       e.toElement.parentElement.parentElement.nextSibling.nextSibling
         .nextSibling.nextSibling.innerText;
-    //   fetch("http://localhost:9000/content", {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json; charset=UTF-8",
-    //     },
-    //   })
-    //     .then((res) => res.json())
-    //     .catch((err) => {
-    //       console.log("[ERROR]", err);
-    //     })
-    //     .then((res) => {
-    //       console.log("delete response: ", res);
-    //     });
-    //   console.log(e);
+      fetch("http://localhost:9000/content", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      })
+        .then((res) => res.json())
+        .catch((err) => {
+          console.log("[ERROR]", err);
+        })
+        .then((res) => {
+          console.log("edit: ", res);
+        });
+      console.log(e);
   };
   deletePost = (e) => {
     let postDiv = e.toElement.parentElement.parentElement.parentElement;
@@ -106,20 +106,20 @@ class Content extends React.Component {
       e.toElement.parentElement.parentElement.nextSibling.nextSibling
         .nextSibling.nextSibling.innerText;
     console.log(post);
-    //   fetch("http://localhost:9000/content", {
-    //     method: "DELETE",
-    //     headers: {
-    //       "Content-Type": "application/json; charset=UTF-8",
-    //     },
-    //   })
-    //     .then((res) => res.json())
-    //     .catch((err) => {
-    //       console.log("[ERROR]", err);
-    //     })
-    //     .then((res) => {
-    //       console.log("delete response: ", res);
-    //     });
-    //   console.log(e);
+      fetch("http://localhost:9000/content", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      })
+        .then((res) => res.json())
+        .catch((err) => {
+          console.log("[ERROR]", err);
+        })
+        .then((res) => {
+          console.log("delete response: ", res);
+        });
+      console.log(e);
   };
 
   createdPost = () => {
