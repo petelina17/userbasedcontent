@@ -105,4 +105,17 @@ router.post("/content", async (req, res) => {
   res.end(JSON.stringify({ createPost: true }));
 });
 
+router.put("/content:", async (req, res) => {
+  const editedPost = req.body;
+  console.log(editedPost);
+  editedPost = {
+    title: forumpost.title,
+    username: forumpost.username,
+    text: forumpost.text,
+    date: forumpost.date,
+  };
+
+  res.end(JSON.stringify({ editPost: true }));
+});
+
 module.exports = router;

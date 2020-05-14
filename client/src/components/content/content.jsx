@@ -7,6 +7,7 @@ let id = 0;
 class Content extends React.Component {
   state = {
     addPost: false,
+    edit: false,
     text: "",
     title: "",
   };
@@ -62,36 +63,46 @@ class Content extends React.Component {
           item.addEventListener("click", this.deletePost);
         });
         document.querySelectorAll(".edit").forEach((item) => {
-          item.addEventListener("click", this.editPost);
+          item.addEventListener("click", (e) => {
+            console.log(e);
+            this.setState({ addPost: true });
+            this.setState({ edit: true });
+          });
         });
       });
   }
   editPost = (e) => {
-    let postDiv = e.toElement.parentElement.parentElement.parentElement;
-    let title = e.toElement.parentElement.parentElement.firstChild.innerText;
-    let username =
-      e.toElement.parentElement.parentElement.nextSibling.nextSibling
-        .children[0].innerText;
-    let date =
-      e.toElement.parentElement.parentElement.nextSibling.nextSibling
-        .children[1].innerText;
-    let post =
-      e.toElement.parentElement.parentElement.nextSibling.nextSibling
-        .nextSibling.nextSibling.innerText;
-      fetch("http://localhost:9000/content", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-        },
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let today = `${year}-${month}-${day}`;
+
+    let editedPost = {
+      title: this.state.title,
+      username: this.props.location.state,
+      text: this.state.text,
+      date: today,
+    };
+
+    fetch("http://localhost:9000/content", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(editedPost),
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log("[ERROR]", err);
       })
-        .then((res) => res.json())
-        .catch((err) => {
-          console.log("[ERROR]", err);
-        })
-        .then((res) => {
-          console.log("edit: ", res);
-        });
-      console.log(e);
+      .then((res) => {
+        console.log("edit response: ", res);
+      });
+    this.setState({ addPost: false });
+    this.setState({ edit: false });
+    this.setState({ title: "" });
+    this.setState({ text: "" });
   };
   deletePost = (e) => {
     let postDiv = e.toElement.parentElement.parentElement.parentElement;
@@ -106,20 +117,20 @@ class Content extends React.Component {
       e.toElement.parentElement.parentElement.nextSibling.nextSibling
         .nextSibling.nextSibling.innerText;
     console.log(post);
-      fetch("http://localhost:9000/content", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-        },
+    fetch("http://localhost:9000/content", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log("[ERROR]", err);
       })
-        .then((res) => res.json())
-        .catch((err) => {
-          console.log("[ERROR]", err);
-        })
-        .then((res) => {
-          console.log("delete response: ", res);
-        });
-      console.log(e);
+      .then((res) => {
+        console.log("delete response: ", res);
+      });
+    console.log(e);
   };
 
   createdPost = () => {
@@ -170,20 +181,14 @@ class Content extends React.Component {
         console.log("login response: ", res);
         if (res.createPost === true) {
           console.log("createPost is true");
+          this.setState({ addPost: false });
+          document.getElementById("allContent").appendChild(postDiv);
+          this.setState({ post: "" });
+          this.setState({ title: "" });
         }
         console.log("createPost is not True");
       });
-
-    this.setState({ addPost: false });
-    document.getElementById("allContent").appendChild(postDiv);
-    this.setState({ post: "" });
-    this.setState({ title: "" });
   };
-
-  logOut = () => {
-    this.props.history.push("/");
-  };
-
   render() {
     return (
       <div id="content-div">
@@ -202,7 +207,12 @@ class Content extends React.Component {
           >
             Add post
           </Button>
-          <Button variant="contained" onClick={this.logOut}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              this.props.history.push("/");
+            }}
+          >
             {" "}
             Log out
           </Button>
@@ -229,14 +239,23 @@ class Content extends React.Component {
                 column="150"
                 placeholder="Enter post here..."
               ></textarea>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={this.createdPost}
-              >
-                {" "}
-                Create Post{" "}
-              </Button>
+              {this.state.edit === false ? (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={this.createdPost}
+                >
+                  Create Post
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={this.editPost}
+                >
+                  Edit Post
+                </Button>
+              )}
             </div>
           </React.Fragment>
         ) : (
