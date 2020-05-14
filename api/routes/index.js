@@ -5,6 +5,7 @@ var router = express.Router();
 var bcrypt = require("bcrypt");
 var helpers = require("./helpers");
 
+// CREATE NEW BLOGPOST
 router.put("/content", async (req, res, next) => {
   // read req ..
   const data = req.body;
@@ -15,7 +16,8 @@ router.put("/content", async (req, res, next) => {
   const saved = content.save(helpers.handleError(res, "OK"));
 });
 
-router.get("/content", (req, res) => {
+// READ ALL BLOGPOSTS FROM DATABASE
+router.get("/contents", (req, res) => {
   Content.find({}, (err, contents) => {
     const handler = helpers.handleError(
       res,

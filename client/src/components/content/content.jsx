@@ -14,7 +14,7 @@ class Content extends React.Component {
   };
 
   componentDidMount() {
-    fetch("http://localhost:9000/content", {
+    fetch("http://localhost:9000/contents", {
       method: "GET",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
