@@ -6,8 +6,9 @@
   flex-direction: column;
   width: 300px;
   height: 30rem;
+  color: rgb(116, 55, 55);
   background-color: white;
-  box-shadow: 0px 0px 25px black;
+  box-shadow: 0px 0px 1px brown;
   border-radius: 5px;
 }
 

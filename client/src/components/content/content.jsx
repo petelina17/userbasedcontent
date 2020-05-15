@@ -253,6 +253,7 @@ class Content extends React.Component {
                 edit: false,
               });
             }}
+            id="addButton"
           >
             Add post
           </Button>
@@ -261,6 +262,7 @@ class Content extends React.Component {
             onClick={() => {
               this.props.history.push("/");
             }}
+            id="homepageButton"
           >
             {" "}
             Log out

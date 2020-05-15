@@ -15,20 +15,6 @@ class LoginPage extends React.Component {
   }
 
   checkLogin = () => {
-    // CHECK IF EMAIL AND PASSWORD-COMBINATION EXIST
-    // const loggedIn = true;
-    // //IF EXIST
-    // if (loggedIn) {
-    //   this.setState({ isLogged: false });
-    //   this.props.history.push("/content");
-    // }
-
-    // // IF NOT EXIST
-    // else {
-    //   this.props.location.state = false;
-    //   this.setState({ isLogged: true });
-    // }
-
     const data = {
       username: this.state.username,
       password: this.state.password,
@@ -50,7 +36,7 @@ class LoginPage extends React.Component {
         if (res.login === true) {
           this.props.history.push("/content", this.state.username);
         }
-        this.props.location.state = false
+        this.props.location.state = false;
         this.setState({ isLogged: true });
       });
   };

@@ -29,7 +29,7 @@ class HomePage extends React.Component {
         </div>
         <h5>Create an account or log in.</h5>
         <Link to="/login">
-          <Button variant="contained" color="default" id="loginbtn">
+          <Button variant="contained" id="loginbtn">
             Login
           </Button>
         </Link>
