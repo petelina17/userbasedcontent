@@ -3,6 +3,7 @@ import "./homepage.css";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import ForumIcon from "@material-ui/icons/Forum";
+import logo from './logo.png'; 
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -24,8 +25,17 @@ class HomePage extends React.Component {
     return (
       <div className="homepage-box">
         {/* <p className="App-intro">{this.state.apiResponse}</p> */}
-        <div>
-          <ForumIcon style={{ fontSize: "50" }} />
+        <div style={{width:"13rem", display: "flex", alignItems: "center", justifyContent:"space-between"}}>
+          <ForumIcon color="secondary" style={{ fontSize: "40", }} />
+          <span
+            style={{
+              fontSize: "3rem",
+              fontWeight: "800",
+              marginLeft: "0.4rem",
+            }}
+          >
+           <img src={logo} alt="Logo" style={{height:"2.1rem"}}/>
+          </span>
         </div>
         <h5>Create an account or log in.</h5>
         <Link to="/login">

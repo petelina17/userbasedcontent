@@ -201,7 +201,7 @@ class Content extends React.Component {
       <div id="content-div" >
         <div>
           <header id="header" >
-          <div style={{width:"10%", display: "flex", alignItems: "center", justifyContent:"space-between"}}>
+          <div style={{width:"13rem", display: "flex", alignItems: "center", justifyContent:"space-between"}}>
           <ForumIcon color="secondary" style={{ fontSize: "40", }} />
           <span
             style={{
