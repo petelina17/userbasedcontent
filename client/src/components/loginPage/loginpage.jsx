@@ -44,8 +44,8 @@ class LoginPage extends React.Component {
   render() {
     return (
       <div className="login-box">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <ExitToAppIcon fontSize="large" />
+        <div style={{width:"45%", display: "flex", alignItems: "center", justifyContent:"space-between"}}>
+          <ExitToAppIcon fontSize="large" color="secondary"/>
           <span
             style={{
               fontSize: "1.5rem",

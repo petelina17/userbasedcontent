@@ -139,11 +139,11 @@ class RegisterForm extends React.Component {
   render() {
     return (
       <form className="register-box">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <PersonAddIcon fontSize="large" />
+        <div style={{width:"62%", display: "flex", alignItems: "center", justifyContent:"space-between"}}>
+          <PersonAddIcon fontSize="large" color="secondary"/>
           <span
             style={{
-              fontSize: "1.5rem",
+              fontSize: "1.6rem",
               fontWeight: "800",
               marginLeft: "0.4rem",
             }}
