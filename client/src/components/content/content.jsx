@@ -245,6 +245,7 @@ class Content extends React.Component {
         <div className="buttondiv">
           <Button
             variant="contained"
+            color="secondary"
             onClick={() => {
               this.setState({
                 addPost: true,
@@ -253,7 +254,6 @@ class Content extends React.Component {
                 edit: false,
               });
             }}
-            id="addButton"
           >
             Add post
           </Button>
