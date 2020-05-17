@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
   return (
-    <Router basename="/postit">
+    <Router basename="/userbasedcontent">
       <Switch>
         <Route path="/" exact component={HomePage} />
         <Route path="/login" component={LoginPage} />
