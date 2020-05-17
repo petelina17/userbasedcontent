@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./registerForm.css";
 import { TextField, Button } from "@material-ui/core";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import logo from './logo.png'; 
+import logo from "./logo.png";
 
 let users = [];
 
@@ -140,8 +140,8 @@ class RegisterForm extends React.Component {
   render() {
     return (
       <form className="register-box">
-        <div style={{width:"13rem", display: "flex", alignItems: "center", justifyContent:"space-between"}}>
-          <PersonAddIcon fontSize="large" color="secondary"/>
+        <div style={{ width: "13rem", display: "flex", alignItems: "center" }}>
+          <PersonAddIcon fontSize="large" color="secondary" />
           <span
             style={{
               fontSize: "3rem",
@@ -149,7 +149,7 @@ class RegisterForm extends React.Component {
               marginLeft: "0.4rem",
             }}
           >
-           <img src={logo} alt="Logo" style={{height:"2.1rem"}}/>
+            <img src={logo} alt="Logo" style={{ height: "2.1rem" }} />
           </span>
         </div>
         {this.state.userExist === true ? (

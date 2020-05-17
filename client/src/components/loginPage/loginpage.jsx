@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { TextField, Button } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import "./loginpage.css";
-import logo from './logo.png'; 
+import logo from "./logo.png";
 
 class LoginPage extends React.Component {
   constructor() {
@@ -45,8 +45,8 @@ class LoginPage extends React.Component {
   render() {
     return (
       <div className="login-box">
-        <div style={{width:"13rem", display: "flex", alignItems: "center", justifyContent:"space-between"}}>
-          <ExitToAppIcon fontSize="large" color="secondary"/>
+        <div style={{ width: "13rem", display: "flex", alignItems: "center" }}>
+          <ExitToAppIcon fontSize="large" color="secondary" />
           <span
             style={{
               fontSize: "3rem",
@@ -54,7 +54,7 @@ class LoginPage extends React.Component {
               marginLeft: "0.4rem",
             }}
           >
-          <img src={logo} alt="Logo" style={{height:"2.1rem"}}/>
+            <img src={logo} alt="Logo" style={{ height: "2.1rem" }} />
           </span>
         </div>
 

@@ -2,7 +2,7 @@ import React from "react";
 import "./content.css";
 import ForumIcon from "@material-ui/icons/Forum";
 import { Button } from "@material-ui/core";
-import logo from './logo.png'; 
+import logo from "./logo.png";
 
 let id = 0;
 let postID;
@@ -198,22 +198,23 @@ class Content extends React.Component {
 
   render() {
     return (
-      <div id="content-div" >
+      <div id="content-div">
         <div>
-          <header id="header" >
-          <div style={{width:"13rem", display: "flex", alignItems: "center", justifyContent:"space-between"}}>
-          <ForumIcon color="secondary" style={{ fontSize: "40", }} />
-          <span
-            style={{
-              fontSize: "3rem",
-              fontWeight: "800",
-              marginLeft: "0.4rem",
-            }}
-          >
-           <img src={logo} alt="Logo" style={{height:"2.1rem"}}/>
-          </span>
-        </div>
-          
+          <header id="header">
+            <div
+              style={{ width: "13rem", display: "flex", alignItems: "center" }}
+            >
+              <ForumIcon color="secondary" style={{ fontSize: "40" }} />
+              <span
+                style={{
+                  fontSize: "3rem",
+                  fontWeight: "800",
+                  marginLeft: "0.4rem",
+                }}
+              >
+                <img src={logo} alt="Logo" style={{ height: "2.1rem" }} />
+              </span>
+            </div>
           </header>
 
           <main id="allContent">
