@@ -4,30 +4,27 @@ import { TextField, Button } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import "./loginpage.css";
 import logo from "./logo.png";
+import StateContext from '../../contexts/StateContext'
 
-class LoginPage extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      username: "",
-      password: "",
-      isLogged: false,
-    };
-  }
+export const rememberUser = (username, context) => {
+  context.username = username;
+  localStorage.setItem('ubc.username', username)
+}
 
-  checkLogin = () => {
-    const data = {
-      username: this.state.username,
-      password: this.state.password,
-    };
+export const checkLogin = (username, password, history, context) => {
+  const data = {
+    username: username,
+    password: password,
+  };
 
-    fetch("http://localhost:9000/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8", // Indicates the content
-      },
-      body: JSON.stringify(data),
-    })
+  fetch("http://localhost:9000/login", {
+    method: "POST",
+    credentials: 'include',
+    headers: {
+      "Content-type": "application/json; charset=UTF-8", // Indicates the content
+    },
+    body: JSON.stringify(data),
+  })
       .then((res) => res.json())
       .catch((err) => {
         console.log("[ERROR]", err);
@@ -35,14 +32,25 @@ class LoginPage extends React.Component {
       .then((res) => {
         console.log("login response: ", res);
         if (res.login === true) {
-          this.props.history.push("/content", this.state.username);
+          rememberUser(data.username, context)
+          history.push("/content");
         }
-        this.props.location.state = false;
-        this.setState({ isLogged: true });
       });
-  };
+};
 
-  render() {
+class LoginPage extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: "",
+      isLogged: false,
+    };
+  }
+
+  static contextType = StateContext
+
+  render () {
     return (
       <div className="login-box">
         <div style={{ width: "13rem", display: "flex", alignItems: "center" }}>
@@ -58,7 +66,7 @@ class LoginPage extends React.Component {
           </span>
         </div>
 
-        {this.props.location.state === true ? (
+        {this.context.userCreated === true ? (
           <div className="usercreated-div">
             Your user was successfully created.
           </div>
@@ -101,7 +109,9 @@ class LoginPage extends React.Component {
           id="login-btn"
           variant="contained"
           color="secondary"
-          onClick={this.checkLogin}
+          onClick={() => {
+            checkLogin(this.state.username, this.state.password, this.props.history, this.context)
+          }}
         >
           LOGIN
         </Button>

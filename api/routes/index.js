@@ -7,6 +7,12 @@ var helpers = require("./helpers");
 
 // CREATE NEW BLOGPOST
 router.post("/content", async (req, res, next) => {
+  console.log('new post, session: ', req.session.username)
+  if (req.session.username == null) {
+    res.statusCode = 401
+    res.json({ error: "you are not authorised" })
+    return
+  }
   // read req ..
   const forumpost = req.body;
   let post = {
@@ -19,23 +25,30 @@ router.post("/content", async (req, res, next) => {
 
   // go to mongodb ...
   const content = await new Content(post);
-  const responseData = JSON.stringify({ createPost: true, blogPost: content })
+  const responseData = { createPost: true, blogPost: content }
   const saved = content.save(helpers.handleError(res, responseData));
 });
 
 // READ ALL BLOGPOSTS FROM DATABASE
-router.get("/contents", (req, res) => {
-  Content.find({}, (err, contents) => {
-    const handler = helpers.handleError(
-      res,
-      JSON.stringify(contents, null, "  ")
-    );
-    handler(err);
-  });
+router.get("/contents", async (req, res) => {
+  console.log('get all posts, session: ', req.session.username)
+
+  const contents = await Content.find({})
+  if (contents == null) {
+    helpers.handleError(res, { error: 'content not found'})
+  }
+  res.status(200).json(contents)
 });
 
 // TRY TO LOGIN
 router.post("/login", async (req, res) => {
+  // Check if user already is logged in
+  if (req.session.username) {
+    const message = 'You are already logged in'
+    console.log(message)
+    return res.json(message)
+  }
+
   const login = req.body;
 
   if (login.username == null || login.password == null) {
@@ -62,7 +75,22 @@ router.post("/login", async (req, res) => {
     return;
   }
 
-  res.end(JSON.stringify({ login: true }));
+  // Create session
+  console.log('put username into session:', user.username)
+  req.session.username = user.username
+  res.status(200).json({ login: true });
+});
+
+//LOGOUT USER
+router.post("/logout", async (req, res) => {
+  console.log('logout: ', req.session.username)
+  req.session = null;
+  // req.secret = baseCookieOptions.secret
+  // res.clearCookie('app.session', baseCookieOptions)
+  // res.clearCookie('app.session.sig', baseCookieOptions)
+  // res.clearCookie('ubc.session')
+  // res.clearCookie('ubc.session.sig')
+  res.status(200).send('Logged out');
 });
 
 // REGISTER NEW USER
@@ -108,11 +136,24 @@ router.post("/register", async (req, res) => {
 
 // EDIT BLOGPOST BY ID
 router.put("/content/:id", async (req, res) => {
+  console.log('session: ', req.session.username)
+  if (req.session.username == null) {
+    res.statusCode = 401
+    res.json({ error: "you are not authorised" })
+    return
+  }
+
   console.log('query id:', req.params.id)
   const found = await Content.findById(req.params.id)
   if (found == null) {
-    res.statusCode = 401
+    res.statusCode = 400
     res.end(JSON.stringify({ error: "invalid blog-post id: " + req.params.id }))
+    return
+  }
+
+  if (found.username !== req.session.username) {
+    res.statusCode = 401
+    res.json({ error: "only the author can edit" })
     return
   }
 
@@ -122,11 +163,16 @@ router.put("/content/:id", async (req, res) => {
   found.text = data.text
   found.date = data.date
 
-  const saved = found.save(helpers.handleError(res, JSON.stringify({ editPost: true })));
+  const saved = found.save(helpers.handleError(res, { editPost: true }));
 });
 
 // DELETE BLOGPOST BY ID
 router.delete("/content/:id", async (req, res) => {
+  if (req.session.username == null) {
+    res.statusCode = 401
+    res.json({ error: "you are not authorised" })
+    return
+  }
   console.log('delete req.params.id:', req.params.id)
   const found = await Content.findById(req.params.id)
   if (found == null) {
@@ -136,10 +182,14 @@ router.delete("/content/:id", async (req, res) => {
   }
 
   console.log('delete id:', found._id)
-
+  if (found.username !== req.session.username) {
+    res.statusCode = 401
+    res.json({ error: "only the author can delete" })
+    return
+  }
   Content.deleteOne(
       {_id: found._id},
-      helpers.handleError(res, JSON.stringify({ deletePost: true }))
+      helpers.handleError(res, { deletePost: true })
   )
 })
 
