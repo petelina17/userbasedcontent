@@ -39,14 +39,25 @@ a {
 }
 
 #loginbtn {
-  width: 70%;
+  /*width: 70%;*/
   color: black;
   background-color: white;
   border: 0.5px solid brown;
 }
 
 #registerbtn {
-  width: 70%;
+  /*width: 70%;*/
   color: white;
-  margin-bottom: 0.4rem;
+  /*margin-bottom: 0.4rem;*/
+}
+
+.button-nav {
+  display: flex;
+  align-items: center;
+}
+.button-nav button {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
 }

@@ -4,6 +4,8 @@ import "./registerForm.css";
 import { TextField, Button } from "@material-ui/core";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import logo from "./logo.png";
+import {checkLogin} from '../loginPage/loginpage'
+import StateContext from '../../contexts/StateContext'
 
 let users = [];
 
@@ -24,6 +26,8 @@ class RegisterForm extends React.Component {
       fullNameError: "",
     };
   }
+
+  static contextType = StateContext
 
   change = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -128,9 +132,12 @@ class RegisterForm extends React.Component {
           if (res.success === true) {
             // alert('You are registered!')
             let userCreated = true;
-            this.props.history.push("/login", userCreated);
+            // this.props.history.push("/login", userCreated);
+
+            checkLogin(user.username, user.password, this.props.history, this.context)
+
             this.setState({ userExist: false });
-          } else if (res.error == "user already exist") {
+          } else if (res.error === "user already exist") {
             this.setState({ userExist: true });
           }
         });

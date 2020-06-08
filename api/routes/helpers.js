@@ -4,11 +4,11 @@ const handleError = (res, responseObject) => {
     if (err) {
       console.log(err)
       res.statusCode = 400
-      res.end({error: err})
+      res.json({error: err})
       return
     }
     // write res to browser ...
-    res.end(responseObject)
+    res.json(responseObject)
   }
 }
 
