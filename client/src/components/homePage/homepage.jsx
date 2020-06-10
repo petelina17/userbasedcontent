@@ -3,13 +3,7 @@ import "./homepage.css";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
 
-class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { apiResponse: "" };
-  }
-
-  render() {
+export const HomePage = (props) => {
     return (
       <div className={'button-nav'}>
         <Link to="/login">
@@ -25,6 +19,6 @@ class HomePage extends React.Component {
       </div>
     );
   }
-}
+
 
 export default HomePage;
