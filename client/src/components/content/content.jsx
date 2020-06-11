@@ -7,7 +7,6 @@ import StateContext from '../../contexts/StateContext'
 import HomePage from '../homePage/homepage'
 
 let id = 0
-let postID
 
 class Content extends React.Component {
   static contextType = StateContext

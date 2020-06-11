@@ -1,235 +1,231 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
-import "./registerForm.css";
-import { TextField, Button } from "@material-ui/core";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import logo from "./logo.png";
+import {Link} from 'react-router-dom'
+import './registerForm.css'
+import {TextField, Button} from '@material-ui/core'
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
+import logo from './logo.png'
 import {checkLogin} from '../loginPage/loginpage'
+import React, {useState, useContext} from 'react'
 import StateContext from '../../contexts/StateContext'
 
-let users = [];
+export const RegisterForm = (props) => {
+  const context = useContext(StateContext)
+  const [state, setState] = useState({
+    fullName: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phoneNr: '',
+    passwordError: '',
+    emailError: '',
+    phoneError: '',
+    fullNameError: '',
+  })
 
-class RegisterForm extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      userCreated: false,
-      fullName: "",
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      phoneNr: "",
-      passwordError: "",
-      emailError: "",
-      phoneError: "",
-      fullNameError: "",
-    };
+  // static contextType = StateContext
+
+  let change = (e) => {
+    setState({...state, [e.target.name]: e.target.value})
   }
 
-  static contextType = StateContext
-
-  change = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  validate = () => {
-    let isError = false;
+  let validate = () => {
+    let isError = false
     if (
-      this.state.email.indexOf("@") === -1 ||
-      this.state.email.indexOf(".") === -1
+        state.email.indexOf('@') === -1 ||
+        state.email.indexOf('.') === -1
     ) {
-      this.setState({ emailError: "Email must contain '@' and '.'." });
-      isError = true;
+      setState({...state, emailError: 'Email must contain \'@\' and \'.\'.'})
+      isError = true
     }
 
-    if (this.state.fullName.length < 4) {
-      this.setState({
-        fullNameError: "More than 4 characters.",
-      });
-      isError = true;
+    if (state.fullName.length < 4) {
+      setState({
+        ...state, fullNameError: 'More than 4 characters.',
+      })
+      isError = true
     }
     if (
-      (this.state.password !== this.state.confirmPassword &&
-        this.state.password.length > 6) ||
-      this.state.confirmPassword.length > 6
+        (state.password !== state.confirmPassword &&
+            state.password.length > 6) ||
+        state.confirmPassword.length > 6
     ) {
-      this.setState({ passwordError: "Your passwords must match." });
-      isError = true;
+      setState({...state, passwordError: 'Your passwords must match.'})
+      isError = true
     }
     if (
-      (this.state.password === this.state.confirmPassword &&
-        this.state.password.length < 6) ||
-      this.state.confirmPassword.length < 6
+        (state.password === state.confirmPassword &&
+            state.password.length < 6) ||
+        state.confirmPassword.length < 6
     ) {
-      this.setState({ passwordError: "Minimum 6 characters long." });
-      isError = true;
+      setState({...state, passwordError: 'Minimum 6 characters long.'})
+      isError = true
     }
 
     if (
-      (this.state.password !== this.state.confirmPassword &&
-        this.state.password.length < 6) ||
-      this.state.confirmPassword.length < 6
+        (state.password !== state.confirmPassword &&
+            state.password.length < 6) ||
+        state.confirmPassword.length < 6
     ) {
-      this.setState({
-        passwordError: "Min 6 characters & same passwords",
-      });
-      isError = true;
+      setState({
+        ...state, passwordError: 'Min 6 characters & same passwords',
+      })
+      isError = true
     }
 
-    if (this.state.phoneNr.length !== 10) {
-      this.setState({
-        phoneError: "Min and maximum 10 numbers long",
-      });
-      isError = true;
+    if (state.phoneNr.length !== 10) {
+      setState({
+        ...state, phoneError: 'Min and maximum 10 numbers long',
+      })
+      isError = true
     }
 
-    return isError;
-  };
+    return isError
+  }
 
-  submit = (e) => {
+  const submit = (e) => {
     // e.preventDefault();
-    this.setState({
-      fullNameError: "",
-      passwordError: "",
-      phoneError: "",
-      emailError: "",
-    });
-    const error = this.validate();
+    setState({
+      ...state,
+      fullNameError: '',
+      passwordError: '',
+      phoneError: '',
+      emailError: '',
+    })
+    const error = validate()
     if (!error) {
-      this.setState({
+      setState({
+        ...state,
         error: false,
         userExist: false,
         userCreated: true,
-        fullNameError: "",
-        passwordError: "",
-        phoneError: "",
-        emailError: "",
-      });
+        fullNameError: '',
+        passwordError: '',
+        phoneError: '',
+        emailError: '',
+      })
 
       // SAVE VALUES OF USER TO DATABASE
       let user = {
-        fullname: this.state.fullName,
-        username: this.state.username,
-        phoneNumber: this.state.phoneNr,
-        email: this.state.email,
-        password: this.state.password,
-      };
+        fullname: state.fullName,
+        username: state.username,
+        phoneNumber: state.phoneNr,
+        email: state.email,
+        password: state.password,
+      }
 
-      fetch("http://localhost:9000/register", {
-        method: "POST",
+      fetch('http://localhost:9000/register', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json; charset=UTF-8",
+          'Content-Type': 'application/json; charset=UTF-8',
         },
         body: JSON.stringify(user),
       })
-        .then((res) => res.json())
-        .catch((err) => {
-          console.log("[ERROR]", err);
-        })
-        .then((res) => {
-          console.log("register response: ", res);
-          if (res.success === true) {
-            // alert('You are registered!')
-            let userCreated = true;
-            // this.props.history.push("/login", userCreated);
+          .then((res) => res.json())
+          .catch((err) => {
+            console.log('[ERROR]', err)
+          })
+          .then((res) => {
+            console.log('register response: ', res)
+            if (res.success === true) {
+              // alert('You are registered!')
+              // let userCreated = true
+              // props.history.push("/login", userCreated);
 
-            checkLogin(user.username, user.password, this.props.history, this.context)
+              checkLogin(user.username, user.password, props.history, context)
 
-            this.setState({ userExist: false });
-          } else if (res.error === "user already exist") {
-            this.setState({ userExist: true });
-          }
-        });
+              setState({...state, userExist: false})
+            } else if (res.error === 'user already exist') {
+              setState({...state, userExist: true})
+            }
+          })
     }
-  };
+  }
 
-  render() {
-    return (
+  return (
       <form className="register-box">
-        <div style={{ width: "13rem", display: "flex", alignItems: "center" }}>
-          <PersonAddIcon fontSize="large" color="secondary" />
+        <div style={{width: '13rem', display: 'flex', alignItems: 'center'}}>
+          <PersonAddIcon fontSize="large" color="secondary"/>
           <span
-            style={{
-              fontSize: "3rem",
-              fontWeight: "800",
-              marginLeft: "0.4rem",
-            }}
+              style={{
+                fontSize: '3rem',
+                fontWeight: '800',
+                marginLeft: '0.4rem',
+              }}
           >
-            <img src={logo} alt="Logo" style={{ height: "2.1rem" }} />
+            <img src={logo} alt="Logo" style={{height: '2.1rem'}}/>
           </span>
         </div>
-        {this.state.userExist === true ? (
-          <div className="userExists-div">User already exists</div>
+        {state.userExist === true ? (
+            <div className="userExists-div">User already exists</div>
         ) : (
-          <></>
+            <></>
         )}
         <TextField
-          id="fullName"
-          onChange={this.change}
-          name="fullName"
-          value={this.state.fullName}
-          size="small"
-          label="Full name"
-          variant="outlined"
-          helperText={this.state.fullNameError}
+            id="fullName"
+            onChange={change}
+            name="fullName"
+            value={state.fullName}
+            size="small"
+            label="Full name"
+            variant="outlined"
+            helperText={state.fullNameError}
         />
         <TextField
-          id="username"
-          onChange={this.change}
-          name="username"
-          value={this.state.username}
-          size="small"
-          label="Username"
-          variant="outlined"
+            id="username"
+            onChange={change}
+            name="username"
+            value={state.username}
+            size="small"
+            label="Username"
+            variant="outlined"
         />
         <TextField
-          id="email"
-          onChange={this.change}
-          name="email"
-          value={this.state.email}
-          size="small"
-          label="Email"
-          variant="outlined"
-          helperText={this.state.emailError}
+            id="email"
+            onChange={change}
+            name="email"
+            value={state.email}
+            size="small"
+            label="Email"
+            variant="outlined"
+            helperText={state.emailError}
         />
         <TextField
-          id="phoneNr"
-          onChange={this.change}
-          name="phoneNr"
-          value={this.state.phoneNr}
-          size="small"
-          label="Phonenumber"
-          variant="outlined"
-          helperText={this.state.phoneError}
+            id="phoneNr"
+            onChange={change}
+            name="phoneNr"
+            value={state.phoneNr}
+            size="small"
+            label="Phonenumber"
+            variant="outlined"
+            helperText={state.phoneError}
         />
         <TextField
-          id="password"
-          type="password"
-          onChange={this.change}
-          name="password"
-          value={this.state.password}
-          size="small"
-          label="Password"
-          variant="outlined"
-          helperText={this.state.passwordError}
+            id="password"
+            type="password"
+            onChange={change}
+            name="password"
+            value={state.password}
+            size="small"
+            label="Password"
+            variant="outlined"
+            helperText={state.passwordError}
         />
         <TextField
-          type="password"
-          onChange={this.change}
-          name="confirmPassword"
-          value={this.state.confirmPassword}
-          size="small"
-          label="Confirm Password"
-          variant="outlined"
-          helperText={this.state.passwordError}
+            type="password"
+            onChange={change}
+            name="confirmPassword"
+            value={state.confirmPassword}
+            size="small"
+            label="Confirm Password"
+            variant="outlined"
+            helperText={state.passwordError}
         />
         <Button
-          size="medium"
-          id="login-btn"
-          variant="contained"
-          color="secondary"
-          onClick={this.submit}
+            size="medium"
+            id="login-btn"
+            variant="contained"
+            color="secondary"
+            onClick={submit}
         >
           REGISTER
         </Button>
@@ -237,8 +233,7 @@ class RegisterForm extends React.Component {
           Already have an account? <Link to="/login">Login</Link>
         </p>
       </form>
-    );
-  }
+  )
 }
 
-export default RegisterForm;
+export default RegisterForm

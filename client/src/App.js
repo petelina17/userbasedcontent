@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import HomePage from "./components/homePage/homepage";
 import RegisterForm from "./components/registerForm/registerForm";
 import LoginPage from "./components/loginPage/loginpage";
 import Content from "./components/content/content";
