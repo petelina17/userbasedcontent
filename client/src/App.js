@@ -5,6 +5,7 @@ import LoginPage from "./components/loginPage/loginpage";
 import Content from "./components/content/content";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import GlobalState from './contexts/GlobalState'
+import EditForm from './components/EditForm'
 
 function App () {
   return (
@@ -14,6 +15,7 @@ function App () {
           <Route path="/" exact component={Content} />
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterForm} />
+          <Route path="/content/new" component={EditForm} />
           <Route path="/content" component={Content} />
           <Route path="/content:id" component={Content} />
         </Switch>

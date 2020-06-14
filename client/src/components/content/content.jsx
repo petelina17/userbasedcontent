@@ -158,72 +158,6 @@ export const Content = (props) => {
         })
   }
 
-  let createdPost = () => {
-    let date = new Date()
-    let year = date.getFullYear()
-    let month = date.getMonth() + 1
-    let day = date.getDate()
-    let today = `${year}-${month}-${day}`
-
-    if (day < 10) day = '0' + day
-    if (month < 10) month = '0' + month
-
-    let postDiv = document.createElement('div')
-    postDiv.id = `post${id++}`
-    postDiv.className = 'post'
-    postDiv.innerHTML = `<div class="titleDiv"><h2> ${state.title}</h2>
-    <div class='delete-edit-div'>
-    <button class='delete'> X </button>
-    <button class='edit'> EDIT </button>
-    </div>
-    </div>
-    <div>
-    <span> ${context.username} </span>
-    <span> ${year}-${month}-${day}</span>
-    </div>
-    <p>${state.text}</p>
-    `
-    let post = {
-      title: state.title,
-      username: context.username,
-      text: state.text,
-      date: today,
-    }
-
-    fetch('http://localhost:9000/content', {
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      credentials: 'include',
-      method: 'POST',
-      body: JSON.stringify(post),
-    })
-        .then((res) => res.json())
-        .catch((err) => {
-          console.log('[ERROR]', err)
-        })
-        .then((res) => {
-          console.log('POST content response: ', res)
-          if (res.createPost === true) {
-            console.log('blog post added:', res.blogPost)
-            const collection = state.blogPosts
-            collection.push(res.blogPost)
-            setState({...state, blogPosts: collection, addPost: false, post: '', title: ''})
-
-            console.log('createPost is true')
-            // setState({...state, addPost: false})
-            // document.getElementById('allContent').appendChild(postDiv)
-            // setState({...state, post: ''})
-            // setState({...state, title: ''})
-            return
-          }
-          console.log('createPost is not True')
-        })
-        .catch((err) => {
-          console.log('[ERROR] 2', err)
-        })
-  }
-
   let logout = async () => {
     forgetUser()
     await fetch('http://localhost:9000/logout', {
@@ -314,7 +248,8 @@ export const Content = (props) => {
             <div className="buttondiv">
               <Button variant="contained" color="secondary"
                       onClick={() => {
-                        setState({...state, addPost: true, title: '', text: '', edit: false})
+                        props.history.push('/content/new')
+                        // setState({...state, addPost: true, title: '', text: '', edit: false})
                       }}
               >
                 Add post
@@ -322,76 +257,6 @@ export const Content = (props) => {
             </div>
         ) : ''}
 
-        {state.addPost === true ? (
-            <React.Fragment>
-              <div className="createPost-div">
-                <h1>Title</h1>
-                <input
-                    defaultValue={state.title}
-                    onChange={(event) =>
-                        setState({...state, title: event.target.value})
-                    }
-                    type="text"
-                    placeholder="Enter title here..."
-                />
-                <h1>Post</h1>
-                <textarea
-                    defaultValue={state.text}
-                    onChange={(event) =>
-                        setState({...state, text: event.target.value})
-                    }
-                    rows="6"
-                    column="150"
-                    placeholder="Enter post here..."
-                />
-                {state.edit === false ? (
-                    <React.Fragment>
-                      <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={createdPost}
-                          id="createEditPost"
-                      >
-                        Create Post
-                      </Button>
-                      <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => {
-                            setState({...state, addPost: false})
-                          }}
-                          id="cancelPost"
-                      >
-                        Cancel Post
-                      </Button>
-                    </React.Fragment>
-                ) : (
-                    <React.Fragment>
-                      <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={editPost}
-                          id="createEditPost"
-                      >
-                        Edit Post
-                      </Button>
-                      <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => {
-                            setState({...state, addPost: false})
-                          }}
-                          id="cancelPost"
-                      >
-                        Cancel Post
-                      </Button>
-                    </React.Fragment>
-                )}
-              </div>
-            </React.Fragment>
-        ) : (
-            <React.Fragment/>
-        )}
       </div>
   )
 }
